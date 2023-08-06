@@ -1,13 +1,14 @@
-import { Box, Text, VStack } from '@chakra-ui/react';
+import { Routes, Route } from 'react-router-dom';
+import Admin from './page/admin';
+import Index from './page/index';
 
-function App() {
+const App = () => {
   return (
-    <VStack>
-      <Box>
-        <Text>Hello World</Text>
-      </Box>
-    </VStack>
+    <Routes>
+      <Route path='/admin' element={<Admin />} />
+      <Route path='*' element={<Index />} />
+    </Routes>
   );
-}
+};
 
 export default App;
