@@ -3,6 +3,6 @@ import Index from '../page/index';
 
 test('Textタグにラップされている文言「User view」の表示確認', () => {
   render(<Index />);
-  const textElement = screen.getByText(/User view/i);
+  const textElement = screen.getByText(/User view/iu);
   expect(textElement).toBeInTheDocument();
 });
