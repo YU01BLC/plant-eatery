@@ -22,21 +22,24 @@ jobs:
     - name: Run tests
       run: npm test
 
-  build_and_deploy:
-    runs-on: ubuntu-latest
+    - name: Run lint&prettier
+      run: npm run fix
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+  # build_and_deploy:
+  #   runs-on: ubuntu-latest
 
-    - name: Install dependencies
-      run: npm install
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
 
-    - name: Build
-      run: npm run build
+  #   - name: Install dependencies
+  #     run: npm install
 
-    - name: Deploy to server
-      run: |
+  #   - name: Build
+  #     run: npm run build
+
+  #   - name: Deploy to server
+  #     run: |
         # AWSリソース周りの構築が完了した時に記述予定
         # 例: AWS S3:
         # aws s3 sync build/ s3://your-bucket-name
