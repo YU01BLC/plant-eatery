@@ -1,4 +1,4 @@
-import { ReportHandler, getCLS, getFID, getFCP, getLCP, getTTFB } from 'web-vitals';
+import { ReportHandler } from 'web-vitals';
 
 const reportWebVitals = async (onPerfEntry?: ReportHandler) => {
   if (onPerfEntry && onPerfEntry instanceof Function) {
