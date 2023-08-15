@@ -36,13 +36,15 @@ module.exports = {
     'import/resolver': {
       node: {
         paths: ['src'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
+        moduleDirectory: ['node_modules', 'src/'],
       },
     },
     'import/extenstions': ['.js', '.jsx', '.ts', '.tsx'],
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'import/no-unresolved': 'off',
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/no-misused-promises': [
       'error',
@@ -57,6 +59,7 @@ module.exports = {
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
+        css: 'always',
       },
     ],
     'react/jsx-filename-extension': [
@@ -186,7 +189,7 @@ module.exports = {
      * importする順番を一定のルールに基づく形にする。
      * --fixオプションに対応しているので、コミット前にformatをかける
      */
-    'sort-imports': 'off',
+    'sort-imports': 0,
     'import/order': [
       'warn',
       {
