@@ -36,7 +36,8 @@ module.exports = {
     'import/resolver': {
       node: {
         paths: ['src'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
+        moduleDirectory: ['node_modules', 'src/'],
       },
     },
     'import/extenstions': ['.js', '.jsx', '.ts', '.tsx'],
@@ -57,6 +58,7 @@ module.exports = {
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
+        css: 'always',
       },
     ],
     'react/jsx-filename-extension': [
