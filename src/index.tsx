@@ -1,12 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+// eslint-disable-next-line import/no-unresolved
+import '@aws-amplify/ui-react/styles.css';
+
+import { Amplify } from 'aws-amplify';
+import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Amplify } from 'aws-amplify';
-import '@aws-amplify/ui-react/styles.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import awsconfig from './aws-exports';
 import reportWebVitals from './reportWebVitals';
-import App from './App';
 
 Amplify.configure(awsconfig);
 

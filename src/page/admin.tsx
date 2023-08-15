@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { Authenticator } from '@aws-amplify/ui-react';
 import {
   Box,
   Text,
@@ -16,7 +16,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { Auth } from 'aws-amplify';
-import { Authenticator } from '@aws-amplify/ui-react';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * 管理画面コンポーネント
