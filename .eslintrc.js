@@ -44,6 +44,7 @@ module.exports = {
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'import/no-unresolved': 'off',
     '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/no-misused-promises': [
       'error',
@@ -188,7 +189,7 @@ module.exports = {
      * importする順番を一定のルールに基づく形にする。
      * --fixオプションに対応しているので、コミット前にformatをかける
      */
-    'sort-imports': 'off',
+    'sort-imports': 0,
     'import/order': [
       'warn',
       {
