@@ -1,10 +1,4 @@
-/**
- * Reactコンポーネント「Admin」
- * @component
- */
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
+import { Authenticator } from '@aws-amplify/ui-react';
 import {
   Avatar,
   Box,
@@ -23,13 +17,11 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ChangeEvent, useRef, useState } from 'react';
-
-import AWS from 'aws-sdk';
 import { Auth } from 'aws-amplify';
-import { Authenticator } from '@aws-amplify/ui-react';
-import { config } from '../config/config';
+import AWS from 'aws-sdk';
+import { ChangeEvent, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { config } from '../config/config';
 
 // AWS S3の設定
 const s3 = new AWS.S3({
