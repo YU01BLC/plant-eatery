@@ -5,6 +5,7 @@
   "dependencies": {
     "@aws-amplify/auth": "^5.6.1",
     "@aws-amplify/ui-react": "^5.1.0",
+    "@chakra-ui/icons": "^2.1.0",
     "@chakra-ui/modal": "^2.3.0",
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
@@ -37,7 +38,6 @@
     "import:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}' --rule 'import/order:warn'",
     "eject": "react-scripts eject"
   },
-  
   "eslintConfig": {
     "extends": [
       "react-app",
