@@ -1,26 +1,27 @@
-import { Authenticator } from '@aws-amplify/ui-react';
 import {
   Avatar,
   Box,
   Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
   Heading,
   Image,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Text,
+  Textarea,
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import { Auth } from 'aws-amplify';
-import AWS from 'aws-sdk';
 import { ChangeEvent, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import AWS from 'aws-sdk';
+import { Authenticator } from '@aws-amplify/ui-react';
+import MonthSelect from '../components/adminParts/months';
+import SignOutModal from '../components/adminParts/signOutModal';
+import { StarIcon } from '@chakra-ui/icons';
 import { config } from '../config/config';
 
 // AWS S3の設定
@@ -35,13 +36,25 @@ const s3 = new AWS.S3({
  * @returns {JSX.Element} 管理画面コンポーネント
  */
 export default function Admin() {
-  // モーダルの状態を管理するためのフック
+  const [imageFile, setImageFile] = useState<File[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-
+  const [date, setDate] = useState<string[]>([]);
+  const [description, setDescription] = useState<string[]>([]);
+  const [descriptions, setDescriptions] = useState<string[]>([]);
+  const [mainImageFlg, setMainImageFlg] = useState<boolean>(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  // ルーティングのためのフック
-  const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const subInputRef = useRef<HTMLInputElement | null>(null);
+  const [rating, setRating] = useState<number>(1);
+
+  /**
+   * スター評価がクリックされた時に実行されるハンドラー
+   * @param {number} index - クリックされたスターのインデックス
+   */
+  const handleStarClick = (index: number) => {
+    setRating(index);
+    // サーバーに送信する処理を追加予定
+  };
 
   /**
    * ファイルを選択するダイアログを開く
@@ -53,15 +66,65 @@ export default function Admin() {
   };
 
   /**
+   * ファイルを選択するダイアログを開く
+   */
+  const subFileUpload = () => {
+    if (subInputRef.current) {
+      subInputRef.current.click();
+    }
+  };
+
+  /**
    * 画像の選択時に実行されるハンドラー
    * @param {ChangeEvent<HTMLInputElement>} target - input要素の変更イベント
    */
   const handleImageChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { files } = target; // target オブジェクトからファイルの情報を取得
     if (files) {
+      const newFile = Array.from(files);
+      setImageFile((prevImageFile) => [...prevImageFile, ...newFile]); // 新たに選択されたファイルを既存の画像ファイル配列に追加
+      setMainImageFlg(true);
+    }
+  };
+
+  /**
+   * 画像の選択時に実行されるハンドラー
+   * @param {ChangeEvent<HTMLInputElement>} target - input要素の変更イベント
+   */
+  const handleAddSubImage = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { files } = target; // target オブジェクトからファイルの情報を取得
+    if (files) {
       const newFiles = Array.from(files);
       setImageFiles((prevImageFiles) => [...prevImageFiles, ...newFiles]); // 新たに選択されたファイルを既存の画像ファイル配列に追加
     }
+  };
+
+  /**
+   * 画像説明の変更ハンドラー
+   * @param {string} text - 画像の説明テキスト
+   */
+  const handleDescriptionChange = (text: string) => {};
+
+  /**
+   * サブ画像の説明の変更ハンドラー
+   * @param {number} index - サブ画像のインデックス
+   * @param {string} subText - サブ画像の説明テキスト
+   */
+  const handleAddSubDescription = (index: number, subText: string) => {};
+
+  /**
+   * 日付の変更ハンドラー
+   * @param {string} dates - 新しい日付情報
+   */
+  const handleDateChange = (dates: string) => {};
+
+  /**
+   * 画像の削除ハンドラー
+   */
+  const handleImageDelete = () => {
+    setImageFile([]);
+    setImageFiles([]);
+    setMainImageFlg(false);
   };
 
   /**
@@ -99,20 +162,23 @@ export default function Admin() {
    * 画像をアップロードするハンドラー
    */
   const handleImageUpload = async () => {
-    if (imageFiles.length === 0) {
+    if (imageFile.length === 0) {
       console.error('画像を選択してください');
       return;
     }
 
     try {
+      const parentImageId = `plant/${Date.now()}`;
+      await uploadImage(imageFile[0], parentImageId); // 親画像をアップロード
+
       const uploads = imageFiles.map((file, index) => {
-        const imageId = `image_id_${Date.now()}_${index}`;
-        return uploadImage(file, imageId); // 画像名を渡す
+        const childImageId = `plant/sub/${Date.now()}_${index}`;
+        return uploadImage(file, childImageId); // 子画像をアップロード
       });
 
-      await Promise.all(uploads); // uploads配列内の全ての非同期処理(全ての画像ファイルをS3にアップロード)完了を待機
+      await Promise.all(uploads);
 
-      // Stateをリセット
+      setImageFile([]);
       setImageFiles([]);
       console.log('画像がアップロードされました');
     } catch (error) {
@@ -120,25 +186,8 @@ export default function Admin() {
     }
   };
 
-  /**
-   * サインアウトボタンがクリックされた時に実行されるハンドラー
-   */
-  const handleSignOut = async () => {
-    try {
-      // サインアウトモーダルを閉じる
-      onClose();
-      // AWS Amplifyのサインアウトを実行
-      await Auth.signOut();
-      // clientページへリダイレクト
-      navigate('/');
-    } catch (error) {
-      // エラーハンドリング
-      console.error('SignOut failed:', error);
-    }
-  };
-
   return (
-    <Box mt='2'>
+    <Box my='4'>
       {/* Amplify Authenticatorでユーザー認証を行う */}
       <Authenticator hideSignUp={true}>
         {({ user }) => (
@@ -167,58 +216,127 @@ export default function Admin() {
                   </Text>
                 </Box>
               </Box>
-              {/* サインアウト確認モーダル */}
-              <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>サインアウトしますか？</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody>
-                    {/* サインアウトの説明 */}
-                    <Text>サインアウトを行いクライアント画面にリダイレクトします。</Text>
-                    {/* 注意書き */}
-                    <Text color='gray' fontSize='12px' pt='2'>
-                      ※ 管理画面アクセス時に再度サインインを求められます。
-                    </Text>
-                  </ModalBody>
-                  {/* モーダルフッター */}
-                  <ModalFooter>
-                    {/* キャンセルボタン */}
-                    <Button variant='ghost' mr={3} onClick={onClose}>
-                      キャンセル
-                    </Button>
-                    {/* サインアウトボタン */}
-                    <Button colorScheme='teal' onClick={handleSignOut}>
-                      サインアウト
-                    </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
             </VStack>
-
+            <SignOutModal isOpen={isOpen} onClose={onClose} />
             {/* 画像入力フォーム */}
             <VStack spacing={6} align='center' mt='4'>
-              <Box>
-                <Text cursor='pointer' textDecoration='underLine 1px' textUnderlineOffset='3px' onClick={fileUpload}>
-                  ファイルを選択
-                </Text>
-                <Input type='file' display='none' ref={inputRef} onChange={handleImageChange} />
+              <Box w='100%'>
+                <Card size='md' mx='4' boxShadow='dark-lg' mb='3'>
+                  <CardBody>
+                    <Box display='flex' mb='3'>
+                      <Text fontWeight='bold'>メイン画像:&ensp;</Text>
+                      {imageFile[0] ? (
+                        <Button colorScheme='orange' size='xs' onClick={handleImageDelete}>
+                          画像を削除
+                        </Button>
+                      ) : (
+                        <>
+                          <Button type='submit' colorScheme='teal' size='xs' onClick={fileUpload}>
+                            画像を選択
+                          </Button>
+                          <Input type='file' display='none' ref={inputRef} onChange={handleImageChange} />
+                        </>
+                      )}
+                    </Box>
+                    <Box>
+                      <Box display={{ md: 'flex' }} mb='3'>
+                        <Text fontWeight='bold'>ファイル名:&ensp;</Text>
+                        <Text>{imageFile.length > 0 ? imageFile[0].name : '未選択'}</Text>
+                      </Box>
+                      <Box display={{ md: 'flex' }} mb='3' alignItems='center'>
+                        <Text fontWeight='bold'>評価:&ensp;</Text>
+                        <Box display='flex'>
+                          {Array(5)
+                            .fill('')
+                            .map((_, i) => (
+                              <StarIcon
+                                key={i}
+                                boxSize={5}
+                                mr='0.5'
+                                color={i < rating ? 'yellow.500' : 'gray.400'}
+                                onClick={() => handleStarClick(i + 1)}
+                                style={{ cursor: 'pointer' }}
+                              />
+                            ))}
+                        </Box>
+                      </Box>
+                      <Box display={{ md: 'flex' }} alignItems='center' mb='3'>
+                        <Text fontWeight='bold'>日付:&ensp;</Text>
+                        <Box display='flex' alignItems='center'>
+                          <MonthSelect
+                            selectedMonth={date[0] || '1'}
+                            onChange={(selectedMonth) => handleDateChange(selectedMonth)}
+                          />
+                          <Text px='2'>~</Text>
+                          <MonthSelect
+                            selectedMonth={date[1] || '2'}
+                            onChange={(selectedMonth) => handleDateChange(selectedMonth)}
+                          />
+                        </Box>
+                      </Box>
+                      {imageFile[0] && (
+                        <Box mb='3'>
+                          <Image
+                            src={URL.createObjectURL(imageFile[0])}
+                            alt={`plant/${String(imageFile[0].name)}`}
+                            w='400px'
+                          />
+                        </Box>
+                      )}
+                      <Text fontWeight='bold'>画像説明:</Text>
+                      <Textarea
+                        placeholder='画像の説明を入力'
+                        value={description[0] || ''}
+                        onChange={(event) => handleDescriptionChange(event.target.value)}
+                        borderColor='gray.600'
+                        borderRadius='md'
+                        px={3}
+                        py={2}
+                      />
+                    </Box>
+                  </CardBody>
+
+                  {imageFiles.map((item, index) => (
+                    <CardBody key={index}>
+                      <Box>
+                        <Box display={{ md: 'flex' }}>
+                          <Text fontWeight='bold'>ファイル名:&ensp;</Text>
+                          <Text mb='3'>{imageFiles.length > 0 ? imageFiles[index].name : '未選択'}</Text>
+                        </Box>
+                        <Box mb='3'>
+                          <Image
+                            src={URL.createObjectURL(item)}
+                            alt={`plant/sub/${String(imageFiles[0].name)}`}
+                            m='0 auto'
+                            w='300px'
+                          />
+                        </Box>
+                        <Text fontWeight='bold'>画像説明:</Text>
+                        <Textarea
+                          placeholder='画像の説明を入力'
+                          value={description[0] || ''}
+                          onChange={(event) => handleAddSubDescription(0, event.target.value)}
+                          borderColor='gray.600'
+                          borderRadius='md'
+                          px={3}
+                          py={2}
+                        />
+                      </Box>
+                    </CardBody>
+                  ))}
+                  <Divider />
+                  <CardFooter>
+                    <ButtonGroup spacing='2'>
+                      <Button colorScheme='teal' onClick={subFileUpload} isDisabled={!mainImageFlg}>
+                        サブ画像追加
+                      </Button>
+                      <Input type='file' display='none' ref={subInputRef} onChange={handleAddSubImage} />
+                    </ButtonGroup>
+                  </CardFooter>
+                </Card>
               </Box>
-              <Box display='flex' mb='2'>
-                <Text fontWeight='bold'>選択されたファイル:&ensp;</Text>
-                {imageFiles[0] ? <Text>{imageFiles[0].name}</Text> : <Text>未選択</Text>}
-              </Box>
-              {imageFiles[0] && (
-                <Box>
-                  <Image
-                    src={imageFiles[0] ? URL.createObjectURL(imageFiles[0]) : ''}
-                    alt={`image_name${String(imageFiles[0])}`}
-                    w='300px'
-                  />
-                </Box>
-              )}
               {/* 画像をアップロードするボタン */}
-              <Button colorScheme='teal' onClick={handleImageUpload}>
+              <Button type='submit' colorScheme='teal' onClick={handleImageUpload} isDisabled={!mainImageFlg}>
                 画像をアップロード
               </Button>
             </VStack>
