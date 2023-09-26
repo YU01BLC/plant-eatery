@@ -1,7 +1,7 @@
 import { Box, CardBody, Image, Text, Textarea } from '@chakra-ui/react';
-import { ChangeEvent, useContext, useRef } from 'react';
 
 import { SubCardContext } from '../../page/admin';
+import { useContext } from 'react';
 
 interface Props {
   index: number;
@@ -12,14 +12,26 @@ interface Props {
  * @returns {JSX.Element} サブカードコンポーネント
  */
 export default function SubCard({ index, item }: Props) {
-  const { subImageFile, subDescription } = useContext(SubCardContext);
+  const { subImageFile, subDescription, setSubDescription, setErrorFlg } = useContext(SubCardContext);
 
   /**
    * サブ画像の説明の変更ハンドラー
    * @param {number} num - サブ画像のインデックス
    * @param {string} subDescriptions - サブ画像の説明
    */
-  const handleAddSubDescription = (num: number, subDescriptions: string) => {};
+  const handleAddSubDescription = (num: number, text: string) => {
+    if (text === '') {
+      setErrorFlg(true);
+    } else {
+      setErrorFlg(false);
+    }
+
+    // subDescription 配列のコピーを作成
+    const newSubDescription = [...subDescription];
+    // 指定された num に対応する要素を更新
+    newSubDescription[num] = text;
+    setSubDescription(newSubDescription);
+  };
 
   return (
     <CardBody>
@@ -31,7 +43,7 @@ export default function SubCard({ index, item }: Props) {
         <Box mb='3'>
           <Image
             src={URL.createObjectURL(item)}
-            alt={`plant/sub/${String(subImageFile[0].name)}`}
+            alt={`plant/sub/${String(subImageFile[index].name)}`}
             m='0 auto'
             w='300px'
           />
@@ -39,8 +51,8 @@ export default function SubCard({ index, item }: Props) {
         <Text fontWeight='bold'>画像説明:</Text>
         <Textarea
           placeholder='画像の説明を入力'
-          value={subDescription[0] || ''}
-          onChange={(event) => handleAddSubDescription(0, event.target.value)}
+          value={subDescription[index] || ''}
+          onChange={(event) => handleAddSubDescription(index, event.target.value)}
           borderColor='gray.600'
           borderRadius='md'
           px={3}

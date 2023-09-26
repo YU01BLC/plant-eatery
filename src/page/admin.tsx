@@ -17,9 +17,7 @@ import React, { ChangeEvent, createContext, useRef, useState } from 'react';
 import AWS from 'aws-sdk';
 import { Authenticator } from '@aws-amplify/ui-react';
 import MainCard from '../components/adminParts/mainCard';
-import MonthSelect from '../components/adminParts/months';
 import SignOutModal from '../components/adminParts/signOutModal';
-import { StarIcon } from '@chakra-ui/icons';
 import SubCard from '../components/adminParts/subCard';
 import { config } from '../config/config';
 
@@ -46,11 +44,13 @@ type MainCardProps = {
   imageFile: File[];
   date: string[];
   description: string[];
+  errorFlg: boolean;
   handleImageDelete: () => void;
   setImageFile: React.Dispatch<React.SetStateAction<File[]>>;
   setDate: React.Dispatch<React.SetStateAction<string[]>>;
   setDescription: React.Dispatch<React.SetStateAction<string[]>>;
   setMainImageFlg: React.Dispatch<React.SetStateAction<boolean>>;
+  setErrorFlg: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /**
@@ -62,6 +62,8 @@ type MainCardProps = {
 type SubCardProps = {
   subImageFile: File[];
   subDescription: string[];
+  setSubDescription: React.Dispatch<React.SetStateAction<string[]>>;
+  setErrorFlg: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 /**
@@ -72,11 +74,13 @@ export const MainCardContext = createContext<MainCardProps>({
   imageFile: [],
   date: [],
   description: [],
+  errorFlg: false,
   handleImageDelete: () => {},
   setImageFile: () => {},
   setDate: () => {},
   setDescription: () => {},
   setMainImageFlg: () => {},
+  setErrorFlg: () => {},
 });
 
 /**
@@ -86,6 +90,8 @@ export const MainCardContext = createContext<MainCardProps>({
 export const SubCardContext = createContext<SubCardProps>({
   subImageFile: [],
   subDescription: [],
+  setSubDescription: () => {},
+  setErrorFlg: () => {},
 });
 
 /**
@@ -95,13 +101,14 @@ export const SubCardContext = createContext<SubCardProps>({
 export default function Admin() {
   /** mainCardState */
   const [imageFile, setImageFile] = useState<File[]>([]);
-  const [date, setDate] = useState<string[]>([]);
+  const [date, setDate] = useState<string[]>(['1', '2']);
   const [description, setDescription] = useState<string[]>([]);
   /** subCardState */
   const [subImageFile, setSubImageFile] = useState<File[]>([]);
   const [subDescription, setSubDescription] = useState<string[]>([]);
   /** otherState */
   const [mainImageFlg, setMainImageFlg] = useState<boolean>(false);
+  const [errorFlg, setErrorFlg] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -189,6 +196,9 @@ export default function Admin() {
 
       setImageFile([]);
       setSubImageFile([]);
+      setDescription(['']);
+      setSubDescription(['']);
+      setMainImageFlg(false);
       console.log('画像がアップロードされました');
     } catch (error) {
       console.error('画像のアップロードに失敗しました', error);
@@ -236,11 +246,13 @@ export default function Admin() {
                       imageFile,
                       date,
                       description,
+                      errorFlg,
                       handleImageDelete,
                       setImageFile,
                       setDate,
                       setDescription,
                       setMainImageFlg,
+                      setErrorFlg,
                     }}
                   >
                     <MainCard />
@@ -252,6 +264,8 @@ export default function Admin() {
                       value={{
                         subImageFile,
                         subDescription,
+                        setSubDescription,
+                        setErrorFlg,
                       }}
                     >
                       <SubCard index={index} item={item} />
@@ -269,7 +283,12 @@ export default function Admin() {
                 </Card>
               </Box>
               {/* 画像をアップロードするボタン */}
-              <Button type='submit' colorScheme='teal' onClick={handleImageUpload} isDisabled={!mainImageFlg}>
+              <Button
+                type='submit'
+                colorScheme='teal'
+                onClick={handleImageUpload}
+                isDisabled={!mainImageFlg && errorFlg}
+              >
                 画像をアップロード
               </Button>
             </VStack>
