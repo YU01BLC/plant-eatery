@@ -10,8 +10,18 @@ import { StarIcon } from '@chakra-ui/icons';
  * @returns {JSX.Element} メインカードコンポーネント
  */
 export default function MainCard() {
-  const { imageFile, date, description, handleImageDelete, setImageFile, setDate, setDescription, setMainImageFlg } =
-    useContext(MainCardContext);
+  const {
+    imageFile,
+    date,
+    description,
+    handleImageDelete,
+    errorFlg,
+    setImageFile,
+    setDate,
+    setDescription,
+    setMainImageFlg,
+    setErrorFlg,
+  } = useContext(MainCardContext);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [rating, setRating] = useState<number>(1);
@@ -51,13 +61,22 @@ export default function MainCard() {
    * 画像説明の変更ハンドラー
    * @param {string} descriptions - 画像の説明
    */
-  const handleDescriptionChange = (text: string) => {};
+  const handleDescriptionChange = (text: string) => {
+    if (text === '') {
+      setErrorFlg(true);
+    } else {
+      setErrorFlg(false);
+    }
+    setDescription([text]);
+  };
 
   /**
    * 日付の変更ハンドラー
    * @param {string} dates - 新しい日付情報
    */
-  const handleDateChange = (dates: string) => {};
+  const handleDateChange = (dates: string[]) => {
+    setDate(dates);
+  };
 
   return (
     <CardBody>
@@ -98,12 +117,19 @@ export default function MainCard() {
               ))}
           </Box>
         </Box>
-        <Box display={{ md: 'flex' }} alignItems='center' mb='3'>
+        <Box mb='3' display={{ md: 'flex' }} alignItems='center'>
           <Text fontWeight='bold'>日付:&ensp;</Text>
           <Box display='flex' alignItems='center'>
-            <MonthSelect selectedMonth={date[0] || '1'} onChange={(selectedMonth) => handleDateChange(selectedMonth)} />
+            {/* MonthSelectコンポーネントを使用して月を選択 */}
+            <MonthSelect
+              selectedMonth={date[0]}
+              onChange={(selectedMonth) => handleDateChange([selectedMonth, date[1]])}
+            />
             <Text px='2'>~</Text>
-            <MonthSelect selectedMonth={date[1] || '2'} onChange={(selectedMonth) => handleDateChange(selectedMonth)} />
+            <MonthSelect
+              selectedMonth={date[1]}
+              onChange={(selectedMonth) => handleDateChange([date[0], selectedMonth])}
+            />
           </Box>
         </Box>
         {imageFile[0] && (
@@ -121,6 +147,11 @@ export default function MainCard() {
           px={3}
           py={2}
         />
+        {errorFlg && (
+          <Text color='red' fontSize='13px' mt='1'>
+            説明文は必須です。
+          </Text>
+        )}
       </Box>
     </CardBody>
   );
