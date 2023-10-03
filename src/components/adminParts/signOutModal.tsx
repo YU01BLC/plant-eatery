@@ -9,7 +9,6 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-
 import { Auth } from 'aws-amplify';
 import { useNavigate } from 'react-router-dom';
 
@@ -43,7 +42,7 @@ export default function SignOutModal({ isOpen, onClose }: Props) {
       navigate('/');
     } catch (error) {
       // エラーハンドリング
-      console.error('SignOut failed:', error);
+      throw new Error(`サインアウトに失敗しました。${error as string}`);
     }
   };
 
