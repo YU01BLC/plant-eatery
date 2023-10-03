@@ -81,7 +81,10 @@ export default function MainCard() {
   return (
     <CardBody>
       <Box display='flex'>
-        <Text fontWeight='bold'>メイン画像:&ensp;</Text>
+        <Text fontWeight='bold'>メイン画像</Text>
+        <Text fontSize='14px' color='red' pl='0.5'>
+          * &ensp;
+        </Text>
         {imageFile[0] ? (
           <Button colorScheme='orange' size='xs' onClick={handleImageDelete}>
             画像を削除
@@ -102,11 +105,11 @@ export default function MainCard() {
       )}
       <Box mt='3'>
         <Box display={{ md: 'flex' }} mb='3'>
-          <Text fontWeight='bold'>ファイル名:&ensp;</Text>
+          <Text fontWeight='bold'>ファイル名&ensp;</Text>
           <Text>{imageFile.length > 0 ? imageFile[0].name : '未選択'}</Text>
         </Box>
         <Box display={{ md: 'flex' }} mb='3' alignItems='center'>
-          <Text fontWeight='bold'>評価:&ensp;</Text>
+          <Text fontWeight='bold'>評価&ensp;</Text>
           <Box display='flex'>
             {Array(5)
               .fill('')
@@ -123,7 +126,7 @@ export default function MainCard() {
           </Box>
         </Box>
         <Box mb='3' display={{ md: 'flex' }} alignItems='center'>
-          <Text fontWeight='bold'>日付:&ensp;</Text>
+          <Text fontWeight='bold'>日付&ensp;</Text>
           <Box display='flex' alignItems='center'>
             {/* MonthSelectコンポーネントを使用して月を選択 */}
             <MonthSelect
@@ -142,7 +145,12 @@ export default function MainCard() {
             <Image src={URL.createObjectURL(imageFile[0])} alt={`plant/${String(imageFile[0].name)}`} w='400px' />
           </Box>
         )}
-        <Text fontWeight='bold'>画像説明:</Text>
+        <Box display='flex'>
+          <Text fontWeight='bold'>画像説明</Text>
+          <Text fontSize='14px' color='red' pl='0.5'>
+            * &ensp;
+          </Text>
+        </Box>
         <Textarea
           placeholder='画像の説明を入力'
           value={description[0] || ''}
