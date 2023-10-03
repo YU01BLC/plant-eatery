@@ -152,7 +152,7 @@ module.exports = {
      * // eslint-disable-next-line
      * を付ける。
      */
-    complexity: ['warn', 20],
+    complexity: ['warn', 10],
     /**
      * スペースの含まれていないコメント禁止する
      * @example
@@ -219,7 +219,7 @@ module.exports = {
      * 変数名は2文字以上なければならない。
      * forのiなどもあり好みはあるが、warnにする。
      */
-    'id-length': 'warn',
+    'id-length': 'off',
     /** 末尾のスペースを許容しない */
     'no-trailing-spaces': 'warn',
     /** レギュラーな空白意外許容しない */
