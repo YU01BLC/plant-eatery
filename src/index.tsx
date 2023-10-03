@@ -23,5 +23,5 @@ root.render(
 );
 
 reportWebVitals().catch((error) => {
-  console.error('Failed to report web vitals', error);
+  throw new Error(`Failed to report web vitals${error as string}`);
 });

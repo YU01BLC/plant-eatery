@@ -11,7 +11,7 @@ const reportWebVitals = async (onPerfEntry?: ReportHandler) => {
       getLCP(onPerfEntry);
       getTTFB(onPerfEntry);
     } catch (error) {
-      console.error('web-vitals import failed', error);
+      throw new Error(`web-vitals import failed. ${error as string}`);
     }
   }
 };

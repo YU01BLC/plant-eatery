@@ -1,9 +1,8 @@
+import { StarIcon } from '@chakra-ui/icons';
 import { Box, Button, CardBody, Image, Input, Text, Textarea } from '@chakra-ui/react';
 import { ChangeEvent, useContext, useRef, useState } from 'react';
-
 import { MainCardContext } from '../../page/admin';
 import MonthSelect from '../adminParts/months';
-import { StarIcon } from '@chakra-ui/icons';
 
 /**
  * メインカードコンポーネント
@@ -19,7 +18,6 @@ export default function MainCard() {
     setImageFile,
     setDate,
     setDescription,
-    setMainImageFlg,
     setErrorFlg,
   } = useContext(MainCardContext);
 
@@ -49,11 +47,13 @@ export default function MainCard() {
    * @param {ChangeEvent<HTMLInputElement>} target - input要素の変更イベント
    */
   const handleImageChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { files } = target; // target オブジェクトからファイルの情報を取得
+    /** target オブジェクトからファイルの情報を取得 */
+    const { files } = target;
     if (files) {
       const newFile = Array.from(files);
-      setImageFile((prevImageFile) => [...prevImageFile, ...newFile]); // 新たに選択されたファイルを既存の画像ファイル配列に追加
-      setMainImageFlg(true);
+      // 新たに選択されたファイルを既存の画像ファイル配列に追加
+      setImageFile((prevImageFile) => [...prevImageFile, ...newFile]);
+      setErrorFlg(false);
     }
   };
 
@@ -80,7 +80,7 @@ export default function MainCard() {
 
   return (
     <CardBody>
-      <Box display='flex' mb='3'>
+      <Box display='flex'>
         <Text fontWeight='bold'>メイン画像:&ensp;</Text>
         {imageFile[0] ? (
           <Button colorScheme='orange' size='xs' onClick={handleImageDelete}>
@@ -95,7 +95,12 @@ export default function MainCard() {
           </>
         )}
       </Box>
-      <Box>
+      {errorFlg && !imageFile[0] && (
+        <Text color='red' fontSize='13px' mt='1'>
+          メイン画像は必須です。
+        </Text>
+      )}
+      <Box mt='3'>
         <Box display={{ md: 'flex' }} mb='3'>
           <Text fontWeight='bold'>ファイル名:&ensp;</Text>
           <Text>{imageFile.length > 0 ? imageFile[0].name : '未選択'}</Text>
@@ -147,7 +152,7 @@ export default function MainCard() {
           px={3}
           py={2}
         />
-        {errorFlg && (
+        {errorFlg && !description[0] && (
           <Text color='red' fontSize='13px' mt='1'>
             説明文は必須です。
           </Text>

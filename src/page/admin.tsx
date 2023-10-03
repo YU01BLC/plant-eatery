@@ -1,3 +1,4 @@
+import { Authenticator } from '@aws-amplify/ui-react';
 import {
   Avatar,
   Box,
@@ -12,10 +13,8 @@ import {
   VStack,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { ChangeEvent, createContext, useRef, useState } from 'react';
-
 import AWS from 'aws-sdk';
-import { Authenticator } from '@aws-amplify/ui-react';
+import React, { ChangeEvent, createContext, useRef, useState } from 'react';
 import MainCard from '../components/adminParts/mainCard';
 import SignOutModal from '../components/adminParts/signOutModal';
 import SubCard from '../components/adminParts/subCard';
@@ -38,7 +37,6 @@ const s3 = new AWS.S3({
  * @property {Function} setImageFile - 画像ファイルを設定する関数
  * @property {Function} setDate - 日付情報を設定する関数
  * @property {Function} setDescription - 画像の説明を設定する関数
- * @property {Function} setMainImageFlg - メイン画像が設定されていることを判別するフラグ関数
  */
 type MainCardProps = {
   imageFile: File[];
@@ -49,7 +47,6 @@ type MainCardProps = {
   setImageFile: React.Dispatch<React.SetStateAction<File[]>>;
   setDate: React.Dispatch<React.SetStateAction<string[]>>;
   setDescription: React.Dispatch<React.SetStateAction<string[]>>;
-  setMainImageFlg: React.Dispatch<React.SetStateAction<boolean>>;
   setErrorFlg: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -79,7 +76,6 @@ export const MainCardContext = createContext<MainCardProps>({
   setImageFile: () => {},
   setDate: () => {},
   setDescription: () => {},
-  setMainImageFlg: () => {},
   setErrorFlg: () => {},
 });
 
@@ -107,11 +103,9 @@ export default function Admin() {
   const [subImageFile, setSubImageFile] = useState<File[]>([]);
   const [subDescription, setSubDescription] = useState<string[]>([]);
   /** otherState */
-  const [mainImageFlg, setMainImageFlg] = useState<boolean>(false);
   const [errorFlg, setErrorFlg] = useState<boolean>(false);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const subInputRef = useRef<HTMLInputElement | null>(null);
 
   /**
@@ -127,10 +121,12 @@ export default function Admin() {
    * @param {ChangeEvent<HTMLInputElement>} target - input要素の変更イベント
    */
   const handleAddSubImage = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { files } = target; // target オブジェクトからファイルの情報を取得
+    // target オブジェクトからファイルの情報を取得
+    const { files } = target;
     if (files) {
       const newFiles = Array.from(files);
-      setSubImageFile((prevImageFiles) => [...prevImageFiles, ...newFiles]); // 新たに選択されたファイルを既存の画像ファイル配列に追加
+      // 新たに選択されたファイルを既存の画像ファイル配列に追加
+      setSubImageFile((prevImageFiles) => [...prevImageFiles, ...newFiles]);
     }
   };
 
@@ -140,7 +136,7 @@ export default function Admin() {
   const handleImageDelete = () => {
     setImageFile([]);
     setSubImageFile([]);
-    setMainImageFlg(false);
+    setErrorFlg(true);
   };
 
   /**
@@ -157,6 +153,7 @@ export default function Admin() {
    * @param {File} file - アップロードするファイル
    * @param {string} imageId - 画像ID
    * @returns {Promise<void>} Promise
+   * @throws {Error} 画像のアップロードに失敗した場合
    */
   const uploadImage = async (file: File, imageId: string): Promise<void> => {
     const params = {
@@ -167,41 +164,48 @@ export default function Admin() {
     };
 
     try {
-      await s3.upload(params).promise(); // S3にファイルをアップロードするための非同期メソッド
+      // S3にファイルをアップロードするための非同期メソッド
+      await s3.upload(params).promise();
       await saveImageInfo(imageId);
     } catch (error) {
-      console.error('画像のアップロードに失敗しました', error);
+      throw new Error(`画像のアップロードに失敗しました。${error as string}`);
     }
   };
 
   /**
+   * ステートを初期化するハンドラー
+   */
+  const handleInitializeState = () => {
+    setImageFile([]);
+    setSubImageFile([]);
+    setDescription(['']);
+    setSubDescription(['']);
+    // console.log('画像がアップロードされました'); 後続対応にてモーダル表示処理追加予定
+  };
+
+  /**
    * 画像をアップロードするハンドラー
+   * @throws {Error} 画像のアップロードに失敗した場合
    */
   const handleImageUpload = async () => {
-    if (imageFile.length === 0) {
-      console.error('画像を選択してください');
+    if (imageFile.length === 0 || description.length === 0) {
+      setErrorFlg(true);
       return;
     }
 
     try {
       const parentImageId = `plant/${Date.now()}`;
-      await uploadImage(imageFile[0], parentImageId); // 親画像をアップロード
-
+      // 親画像をアップロード
+      await uploadImage(imageFile[0], parentImageId);
       const uploads = subImageFile.map((file, index) => {
         const childImageId = `plant/sub/${Date.now()}_${index}`;
-        return uploadImage(file, childImageId); // 子画像をアップロード
+        // 子画像をアップロード
+        return uploadImage(file, childImageId);
       });
-
       await Promise.all(uploads);
-
-      setImageFile([]);
-      setSubImageFile([]);
-      setDescription(['']);
-      setSubDescription(['']);
-      setMainImageFlg(false);
-      console.log('画像がアップロードされました');
+      handleInitializeState();
     } catch (error) {
-      console.error('画像のアップロードに失敗しました', error);
+      throw new Error(`画像のアップロードに失敗しました。${error as string}`);
     }
   };
 
@@ -251,7 +255,6 @@ export default function Admin() {
                       setImageFile,
                       setDate,
                       setDescription,
-                      setMainImageFlg,
                       setErrorFlg,
                     }}
                   >
@@ -274,7 +277,7 @@ export default function Admin() {
                   <Divider />
                   <CardFooter>
                     <ButtonGroup spacing='2'>
-                      <Button colorScheme='teal' onClick={subFileUpload} isDisabled={!mainImageFlg}>
+                      <Button colorScheme='teal' onClick={subFileUpload} isDisabled={!imageFile[0]}>
                         サブ画像追加
                       </Button>
                       <Input type='file' display='none' ref={subInputRef} onChange={handleAddSubImage} />
@@ -287,7 +290,7 @@ export default function Admin() {
                 type='submit'
                 colorScheme='teal'
                 onClick={handleImageUpload}
-                isDisabled={!mainImageFlg && errorFlg}
+                isDisabled={!imageFile[0] || !description[0] || errorFlg}
               >
                 画像をアップロード
               </Button>
