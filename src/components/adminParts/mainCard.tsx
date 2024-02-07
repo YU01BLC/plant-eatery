@@ -1,7 +1,7 @@
 import { StarIcon } from '@chakra-ui/icons';
 import { Box, Button, CardBody, Image, Input, Text, Textarea } from '@chakra-ui/react';
-import { ChangeEvent, useContext, useRef, useState } from 'react';
-import { MainCardContext } from '../../page/admin';
+import { ChangeEvent, useRef, useState } from 'react';
+import { useMainCardStore, otherStore } from '../../store/adminStore';
 import MonthSelect from '../adminParts/months';
 
 /**
@@ -9,17 +9,8 @@ import MonthSelect from '../adminParts/months';
  * @returns {JSX.Element} メインカードコンポーネント
  */
 export default function MainCard() {
-  const {
-    imageFile,
-    date,
-    description,
-    handleImageDelete,
-    errorFlg,
-    setImageFile,
-    setDate,
-    setDescription,
-    setErrorFlg,
-  } = useContext(MainCardContext);
+  const { imageFile, date, description, setImageFile, setDate, setDescription } = useMainCardStore();
+  const { errorFlg, setErrorFlg } = otherStore();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [rating, setRating] = useState<number>(1);
@@ -50,9 +41,9 @@ export default function MainCard() {
     /** target オブジェクトからファイルの情報を取得 */
     const { files } = target;
     if (files) {
-      const newFile = Array.from(files);
+      const newFiles: File[] = Array.from(files);
       // 新たに選択されたファイルを既存の画像ファイル配列に追加
-      setImageFile((prevImageFile) => [...prevImageFile, ...newFile]);
+      setImageFile(newFiles);
       setErrorFlg(false);
     }
   };
@@ -68,6 +59,14 @@ export default function MainCard() {
       setErrorFlg(false);
     }
     setDescription([text]);
+  };
+
+  /**
+   * 画像の削除ハンドラー
+   */
+  const handleImageDelete = () => {
+    setImageFile([]);
+    setErrorFlg(true);
   };
 
   /**

@@ -1,6 +1,5 @@
 import { Box, CardBody, Image, Text, Textarea } from '@chakra-ui/react';
-import { useContext } from 'react';
-import { SubCardContext } from '../../page/admin';
+import { useSubCardStore } from '../../store/adminStore';
 
 interface Props {
   index: number;
@@ -11,7 +10,7 @@ interface Props {
  * @returns {JSX.Element} サブカードコンポーネント
  */
 export default function SubCard({ index, item }: Props) {
-  const { subImageFile, subDescription, setSubDescription, setErrorFlg } = useContext(SubCardContext);
+  const { subImageFile, subDescription, setSubDescription } = useSubCardStore();
 
   /**
    * サブ画像の説明の変更ハンドラー

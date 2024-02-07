@@ -125,8 +125,8 @@ module.exports = {
      */
     'sort-keys': 'off',
     /** 関数ブロックで宣言されるステートメントの数に制限をかける。*/
-    'max-statements': 'warn',
-    /** 関数ブロックで許可される行数に制限をかける。既存からの移植案件で有効化は難しいので無効にする。 */
+    'max-statements': 'off',
+    /** 関数ブロックで許可される行数に制限をかける。 */
     'max-lines-per-function': 'off',
     /** ファイルの最大行数に制限をかける。*/
     'max-lines': 'warn',
