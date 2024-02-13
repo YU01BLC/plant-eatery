@@ -1,3 +1,5 @@
+'use client';
+
 import { Authenticator } from '@aws-amplify/ui-react';
 import {
   Avatar,
@@ -15,9 +17,9 @@ import {
 } from '@chakra-ui/react';
 import AWS from 'aws-sdk';
 import React, { ChangeEvent, useRef } from 'react';
-import MainCard from '../components/adminParts/mainCard';
-import SignOutModal from '../components/adminParts/signOutModal';
-import SubCard from '../components/adminParts/subCard';
+import MainCard from '../components/admin/mainCard';
+import SignOutModal from '../components/admin/signOutModal';
+import SubCard from '../components/admin/subCard';
 import { config } from '../config/config';
 import { useMainCardStore, useSubCardStore, otherStore } from '../store/adminStore';
 

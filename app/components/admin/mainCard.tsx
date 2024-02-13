@@ -1,14 +1,14 @@
 import { StarIcon } from '@chakra-ui/icons';
 import { Box, Button, CardBody, Image, Input, Text, Textarea } from '@chakra-ui/react';
 import { ChangeEvent, useRef, useState } from 'react';
+import MonthSelect from './months';
 import { useMainCardStore, otherStore } from '../../store/adminStore';
-import MonthSelect from '../adminParts/months';
 
-/**
+/* *
  * メインカードコンポーネント
  * @returns {JSX.Element} メインカードコンポーネント
  */
-export default function MainCard() {
+export default function Admin() {
   const { imageFile, date, description, setImageFile, setDate, setDescription } = useMainCardStore();
   const { errorFlg, setErrorFlg } = otherStore();
 
@@ -125,8 +125,8 @@ export default function MainCard() {
           </Box>
         </Box>
         <Box mb='3' display={{ md: 'flex' }} alignItems='center'>
-          <Text fontWeight='bold'>日付&ensp;</Text>
-          <Box display='flex' alignItems='center'>
+          <Text fontWeight='bold'>日付&ensp; </Text>
+          <Box display='flex' alignIt ems='center'>
             {/* MonthSelectコンポーネントを使用して月を選択 */}
             <MonthSelect
               selectedMonth={date[0]}

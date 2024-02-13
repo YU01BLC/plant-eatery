@@ -1,6 +1,6 @@
 import { Box, Text, VStack } from '@chakra-ui/react';
 
-export default function Index() {
+export default function Client() {
   return (
     <VStack>
       <Box>

@@ -35,9 +35,9 @@ module.exports = {
     },
     'import/resolver': {
       node: {
-        paths: ['src'],
+        paths: ['app'],
         extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
-        moduleDirectory: ['node_modules', 'src/'],
+        moduleDirectory: ['node_modules', 'app/'],
       },
     },
     'import/extenstions': ['.js', '.jsx', '.ts', '.tsx'],
@@ -85,7 +85,7 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: '@src/**',
+            pattern: '@app/**',
             group: 'parent',
             position: 'before',
           },
@@ -224,5 +224,6 @@ module.exports = {
     'no-trailing-spaces': 'warn',
     /** レギュラーな空白意外許容しない */
     'no-irregular-whitespace': 'error',
+    'new-cap': 0,
   },
 };

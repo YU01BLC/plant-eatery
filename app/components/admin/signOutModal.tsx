@@ -10,7 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Auth } from 'aws-amplify';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 // Propsの型定義
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
  * @returns {JSX.Element} サインアウトモーダルコンポーネント
  */
 export default function SignOutModal({ isOpen, onClose }: Props) {
-  const navigate = useNavigate();
+  const navigate = useRouter();
 
   /**
    * サインアウトボタンがクリックされた時に実行されるハンドラー
