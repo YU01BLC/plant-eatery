@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
   "auth": {
-    "planteaterybf8453aa": {
+    "appdb54ba4c": {
       "AppClientID": "string",
       "AppClientIDWeb": "string",
       "IdentityPoolId": "string",
@@ -8,6 +8,15 @@ export type AmplifyDependentResourcesAttributes = {
       "UserPoolArn": "string",
       "UserPoolId": "string",
       "UserPoolName": "string"
+    }
+  },
+  "function": {
+    "appdb54ba4cCustomMessage": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
     }
   }
 }

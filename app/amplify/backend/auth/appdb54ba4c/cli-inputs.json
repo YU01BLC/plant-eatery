@@ -1,10 +1,10 @@
 {
   "version": "1",
   "cognitoConfig": {
-    "identityPoolName": "planteaterybf8453aa_identitypool_bf8453aa",
+    "identityPoolName": "appdb54ba4c_identitypool_db54ba4c",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "plantebf8453aa",
-    "userPoolName": "planteaterybf8453aa_userpool_bf8453aa",
+    "resourceNameTruncated": "appdb54ba4c",
+    "userPoolName": "appdb54ba4c_userpool_db54ba4c",
     "autoVerifiedAttributes": [
       "email"
     ],
@@ -31,15 +31,20 @@
     "userpoolClientReadAttributes": [
       "email"
     ],
-    "userpoolClientLambdaRole": "plantebf8453aa_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "appdb5db54ba4c_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "bf8453aa",
-    "resourceName": "planteaterybf8453aa",
+    "sharedId": "db54ba4c",
+    "resourceName": "appdb54ba4c",
     "authSelections": "identityPoolAndUserPool",
     "useDefault": "default",
-    "triggers": {},
+    "triggers": {
+      "CustomMessage": [
+        "verification-link"
+      ]
+    },
     "userPoolGroupList": [],
     "serviceName": "Cognito",
+    "verificationBucketName": "appdb54ba4cverificationbucket",
     "usernameCaseSensitive": false,
     "useEnabledMfas": true
   }
