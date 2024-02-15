@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint --ext .ts,.tsx ./app --ignore-pattern app/amplify",
+    "fix": "npm run import:fix && npm run format && npm run lint:fix",
+    "lint:fix": "eslint --fix 'app/**/*.{ts,tsx}' --ignore-pattern app/amplify",
+    "format": "prettier --write 'app/**/*.{ts,tsx}'",
+    "import:fix": "eslint --fix 'app/**/*.{ts,tsx}' --rule 'import/order:warn' --ignore-pattern app/amplify"    
   },
   "dependencies": {
     "@aws-amplify/auth": "^5.6.1",
