@@ -2,62 +2,36 @@
   "name": "plant-eatery",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --ext .ts,.tsx ./app --ignore-pattern app/amplify",
+    "fix": "npm run import:fix && npm run format && npm run lint:fix",
+    "lint:fix": "eslint --fix 'app/**/*.{ts,tsx}' --ignore-pattern app/amplify",
+    "format": "prettier --write 'app/**/*.{ts,tsx}'",
+    "import:fix": "eslint --fix 'app/**/*.{ts,tsx}' --rule 'import/order:warn' --ignore-pattern app/amplify"    
+  },
   "dependencies": {
     "@aws-amplify/auth": "^5.6.1",
-    "@aws-amplify/ui-react": "^5.1.0",
+    "@aws-amplify/ui-react": "^5.3.3",
     "@chakra-ui/icons": "^2.1.0",
     "@chakra-ui/modal": "^2.3.0",
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.39",
-    "@types/react": "^18.2.18",
-    "@types/react-dom": "^18.2.7",
-    "aws-amplify": "^5.3.7",
+    "aws-amplify": "^5.3.15",
     "aws-sdk": "^2.1432.0",
     "framer-motion": "^10.15.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.14.2",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4",
+    "next": "14.1.0",
+    "react": "^18",
+    "react-dom": "^18",
     "zustand": "^4.5.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "lint": "eslint --ext .ts,.tsx,.js,.jsx ./src",
-    "fix": "npm run import:fix && npm run format && npm run lint:fix",
-    "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}'",
-    "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
-    "import:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx}' --rule 'import/order:warn'",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
     "eslint": "^8.50.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.0.0",
@@ -66,6 +40,7 @@
     "eslint-plugin-import": "^2.28.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.7",
+    "typescript": "^5"
   }
 }
