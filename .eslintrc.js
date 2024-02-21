@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['app/amplify/'],
+  ignorePatterns: ['/app/amplify/', '/app/aws-exports.js'],
   env: {
     browser: true,
     es2021: true,
@@ -19,11 +19,13 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
+    'next/core-web-vitals',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      tsconfigRootDir: __dirname,
     },
     ecmaVersion: 12,
     sourceType: 'module',

@@ -126,7 +126,7 @@ export default function Admin() {
         </Box>
         <Box mb='3' display={{ md: 'flex' }} alignItems='center'>
           <Text fontWeight='bold'>日付&ensp; </Text>
-          <Box display='flex' alignIt ems='center'>
+          <Box display='flex' alignItems='center'>
             {/* MonthSelectコンポーネントを使用して月を選択 */}
             <MonthSelect
               selectedMonth={date[0]}
