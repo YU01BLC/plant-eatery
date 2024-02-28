@@ -13,6 +13,7 @@
     "import:fix": "eslint --fix 'app/**/*.{ts,tsx}' --rule 'import/order:warn' --ignore-pattern app/amplify"
   },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.0.18",
     "@aws-amplify/auth": "^6.0.17",
     "@aws-amplify/ui-react": "^6.1.4",
     "@chakra-ui/icons": "^2.1.0",
@@ -20,7 +21,7 @@
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "aws-amplify": "^6.0.17",
+    "aws-amplify": "^6.0.18",
     "aws-sdk": "^2.1432.0",
     "framer-motion": "^10.15.0",
     "next": "14.1.0",
