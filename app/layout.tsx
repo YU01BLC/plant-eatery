@@ -2,12 +2,13 @@ import '@aws-amplify/ui-react/styles.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Amplify } from 'aws-amplify';
 import { Inter } from 'next/font/google';
-import config from './src/amplifyconfiguration.json';
 import './globals.css';
+import config from './src/amplifyconfiguration.json';
 import type { Metadata } from 'next';
 
-const inter = Inter({ subsets: ['latin'] });
 Amplify.configure(config);
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
