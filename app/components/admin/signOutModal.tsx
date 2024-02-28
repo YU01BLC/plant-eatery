@@ -9,7 +9,7 @@ import {
   ModalOverlay,
   Text,
 } from '@chakra-ui/react';
-import { Auth } from 'aws-amplify';
+import { signOut } from 'aws-amplify/auth';
 import { redirect } from 'next/navigation';
 
 // Propsの型定義
@@ -35,7 +35,7 @@ export default function SignOutModal({ isOpen, onClose }: Props) {
       // サインアウトモーダルを閉じる
       onClose();
       // AWS Amplifyのサインアウトを実行
-      await Auth.signOut();
+      await signOut();
       // clientページへリダイレクト
       redirect('/');
     } catch (error) {

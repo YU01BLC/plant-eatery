@@ -139,7 +139,7 @@ export default function Admin() {
   return (
     <Box my='4'>
       {/* Amplify Authenticatorでユーザー認証を行う */}
-      <Authenticator loginMechanisms={['username']} hideSignUp={false}>
+      <Authenticator hideSignUp={false}>
         {({ user }) => (
           <>
             {/* ヘッダータイトル */}
