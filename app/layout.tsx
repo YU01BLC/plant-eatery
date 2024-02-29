@@ -6,9 +6,8 @@ import './globals.css';
 import config from './src/amplifyconfiguration.json';
 import type { Metadata } from 'next';
 
-if (config) {
-  Amplify.configure(config);
-}
+// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+Amplify.configure(config);
 
 const inter = Inter({ subsets: ['latin'] });
 
