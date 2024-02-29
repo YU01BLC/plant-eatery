@@ -1,5 +1,5 @@
 module.exports = {
-  ignorePatterns: ['/app/amplify/', '/app/aws-exports.js'],
+  ignorePatterns: ['/app/amplify/', '/app/src/aws-exports.js'],
   env: {
     browser: true,
     es2021: true,
@@ -63,6 +63,7 @@ module.exports = {
         ts: 'never',
         tsx: 'never',
         css: 'always',
+        json: 'always',
       },
     ],
     'react/jsx-filename-extension': [
