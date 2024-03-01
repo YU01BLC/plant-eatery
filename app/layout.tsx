@@ -7,7 +7,7 @@ import config from './src/amplifyconfiguration.json';
 import type { Metadata } from 'next';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-Amplify.configure(config);
+Amplify.configure(config, { ssr: true });
 
 const inter = Inter({ subsets: ['latin'] });
 
