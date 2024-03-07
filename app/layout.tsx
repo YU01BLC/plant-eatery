@@ -1,13 +1,9 @@
 import '@aws-amplify/ui-react/styles.css';
 import { ChakraProvider } from '@chakra-ui/react';
-import { Amplify } from 'aws-amplify';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import config from './src/amplifyconfiguration.json';
+import ConfigureAmplifyClientSide from './utils/ConfigureAmplifyClientSide';
 import type { Metadata } from 'next';
-
-// eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-Amplify.configure(config, { ssr: true });
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
+        <ConfigureAmplifyClientSide />
         <ChakraProvider>{children}</ChakraProvider>
       </body>
     </html>
