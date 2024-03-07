@@ -1,4 +1,5 @@
 module.exports = {
+  ignorePatterns: ['/app/amplify/', '/app/src/aws-exports.js'],
   env: {
     browser: true,
     es2021: true,
@@ -18,11 +19,13 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
+    'next/core-web-vitals',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
+      tsconfigRootDir: __dirname,
     },
     ecmaVersion: 12,
     sourceType: 'module',
@@ -35,15 +38,23 @@ module.exports = {
     },
     'import/resolver': {
       node: {
-        paths: ['src'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        paths: ['app'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.css'],
+        moduleDirectory: ['node_modules', 'app/'],
       },
     },
     'import/extenstions': ['.js', '.jsx', '.ts', '.tsx'],
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'import/no-unresolved': 'off',
     '@typescript-eslint/no-var-requires': 0,
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      {
+        checksVoidReturn: false,
+      },
+    ],
     'import/extensions': [
       'error',
       {
@@ -51,6 +62,8 @@ module.exports = {
         jsx: 'never',
         ts: 'never',
         tsx: 'never',
+        css: 'always',
+        json: 'always',
       },
     ],
     'react/jsx-filename-extension': [
@@ -76,7 +89,7 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: '@src/**',
+            pattern: '@app/**',
             group: 'parent',
             position: 'before',
           },
@@ -116,8 +129,8 @@ module.exports = {
      */
     'sort-keys': 'off',
     /** 関数ブロックで宣言されるステートメントの数に制限をかける。*/
-    'max-statements': 'warn',
-    /** 関数ブロックで許可される行数に制限をかける。既存からの移植案件で有効化は難しいので無効にする。 */
+    'max-statements': 'off',
+    /** 関数ブロックで許可される行数に制限をかける。 */
     'max-lines-per-function': 'off',
     /** ファイルの最大行数に制限をかける。*/
     'max-lines': 'warn',
@@ -143,7 +156,7 @@ module.exports = {
      * // eslint-disable-next-line
      * を付ける。
      */
-    complexity: ['warn', 20],
+    complexity: ['warn', 10],
     /**
      * スペースの含まれていないコメント禁止する
      * @example
@@ -180,7 +193,7 @@ module.exports = {
      * importする順番を一定のルールに基づく形にする。
      * --fixオプションに対応しているので、コミット前にformatをかける
      */
-    'sort-imports': 'off',
+    'sort-imports': 0,
     'import/order': [
       'warn',
       {
@@ -210,10 +223,11 @@ module.exports = {
      * 変数名は2文字以上なければならない。
      * forのiなどもあり好みはあるが、warnにする。
      */
-    'id-length': 'warn',
+    'id-length': 'off',
     /** 末尾のスペースを許容しない */
     'no-trailing-spaces': 'warn',
     /** レギュラーな空白意外許容しない */
     'no-irregular-whitespace': 'error',
+    'new-cap': 0,
   },
 };

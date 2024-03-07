@@ -2,47 +2,47 @@
   "name": "plant-eatery",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint --ext .ts,.tsx ./app --ignore-pattern ./app/amplify",
+    "fix": "npm run import:fix && npm run format && npm run lint:fix",
+    "lint:fix": "eslint --fix 'app/**/*.{ts,tsx}' --ignore-pattern ./app/amplify",
+    "format": "prettier --write 'app/**/*.{ts,tsx}'",
+    "import:fix": "eslint --fix 'app/**/*.{ts,tsx}' --rule 'import/order:warn' --ignore-pattern ./app/amplify"
+  },
   "dependencies": {
+    "@aws-amplify/adapter-nextjs": "^1.0.18",
+    "@aws-amplify/auth": "^6.0.17",
+    "@aws-amplify/ui-react": "^6.1.4",
+    "@chakra-ui/icons": "^2.1.0",
+    "@chakra-ui/modal": "^2.3.0",
     "@chakra-ui/react": "^2.8.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.39",
-    "@types/react": "^18.2.18",
-    "@types/react-dom": "^18.2.7",
-    "aws-sdk": "^2.1430.0",
+    "aws-amplify": "^6.0.18",
+    "aws-sdk": "^2.1432.0",
     "framer-motion": "^10.15.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "next": "14.1.0",
+    "react": "^18",
+    "react-dom": "^18",
+    "zustand": "^4.5.0"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8.50.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-next": "^14.1.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.6.0",
+    "eslint-plugin-import": "^2.28.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "prettier": "^2.8.7",
+    "typescript": "^5"
   }
 }

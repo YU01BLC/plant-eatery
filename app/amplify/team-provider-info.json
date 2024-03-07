@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-planteatery-dev-102300-authRole",
+      "UnauthRoleArn": "arn:aws:iam::655156330431:role/amplify-planteatery-dev-102300-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::655156330431:role/amplify-planteatery-dev-102300-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-planteatery-dev-102300-deployment",
+      "UnauthRoleName": "amplify-planteatery-dev-102300-unauthRole",
+      "StackName": "amplify-planteatery-dev-102300",
+      "StackId": "arn:aws:cloudformation:us-east-1:655156330431:stack/amplify-planteatery-dev-102300/eba52e20-d5d7-11ee-9d85-0effde7b89b7",
+      "AmplifyAppId": "d1q8c3dode6jgt"
+    },
+    "categories": {
+      "auth": {
+        "planteatery25f8ddbf": {}
+      },
+      "api": {
+        "planteatery": {}
+      }
+    }
+  }
+}
