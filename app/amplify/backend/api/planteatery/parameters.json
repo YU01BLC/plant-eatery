@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "planteatery",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authplanteatery25f8ddbf",
+      "Outputs.UserPoolId"
+    ]
+  },
+  "AuthModeLastUpdated": "2024-03-01T15:26:00.921Z"
+}
