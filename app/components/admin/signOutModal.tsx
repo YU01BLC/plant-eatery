@@ -10,7 +10,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { signOut } from 'aws-amplify/auth';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 // Propsの型定義
 interface Props {
@@ -27,6 +27,7 @@ interface Props {
  * @returns {JSX.Element} サインアウトモーダルコンポーネント
  */
 export default function SignOutModal({ isOpen, onClose }: Props) {
+  const router = useRouter();
   /**
    * サインアウトボタンがクリックされた時に実行されるハンドラー
    */
@@ -37,7 +38,7 @@ export default function SignOutModal({ isOpen, onClose }: Props) {
       // AWS Amplifyのサインアウトを実行
       await signOut();
       // clientページへリダイレクト
-      redirect('/');
+      router.push('/client');
     } catch (error) {
       // エラーハンドリング
       throw new Error(`サインアウトに失敗しました。${error as string}`);
